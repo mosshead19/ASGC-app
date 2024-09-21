@@ -8,11 +8,15 @@ namespace FunctionCaseStudy
 {
     internal class Program
     {
+        public static string assignments;
+        public static string quizzes;
+
+
         //Total Weighted Average
-        public static double totalAveScore(double[] quizScores, double[] assignmentScores, double finalExamScore)
+        public static double totalAveScore(List<double> quizScores, List<double> assignmentScores, double finalExamScore)
         {
 
-            //average's grading criteria
+            //Average's grading criteria
             //Quiz = 25%
             //Assignment = 25%
             //Final Exam = 50%
@@ -31,6 +35,7 @@ namespace FunctionCaseStudy
 
 
         }
+
 
         //Letter Grade
         public static string letterGrade(double weightedAverageScore)
@@ -66,15 +71,11 @@ namespace FunctionCaseStudy
             {
                 return "F";
             }
-
-
         }
 
 
-
-
-        //Student Report
-        public static void displayStudentReport(string studentName, double[] assignmentScores, double[] quizScores, double finalExamScore)
+        //Student Report Display
+        public static void displayStudentReport(string studentName, List<double> assignmentScores, List<double> quizScores, double finalExamScore)
         {
 
             double weightedAverageScore = totalAveScore(quizScores, assignmentScores, finalExamScore);
@@ -85,27 +86,12 @@ namespace FunctionCaseStudy
             Console.WriteLine("===========Student Report Summary===========");
             Console.WriteLine();
             Console.WriteLine($"Name of student: {studentName}");
-            Console.WriteLine("\nAssignment Scores:");
-
-            foreach (var i in assignmentScores)
-            {
-                Console.Write(i);
-                Console.Write(" ");
-            }
-
-            Console.WriteLine("\n\nQuiz Scores:");
-            foreach (var i in quizScores)
-            {
-                Console.Write(i);
-                Console.Write(" ");
-            }
-
-            Console.WriteLine($"\n\nFinal Exam Score: {finalExamScore}");
-            Console.WriteLine($"\nWeighted Average: {weightedAverageScore}");
+            Console.WriteLine($"\nAssignment Scores: {assignments}");
+            Console.WriteLine($"\nQuiz Scores: {quizzes}");
+            Console.WriteLine($"\nFinal Exam Score: {finalExamScore}");
+            Console.WriteLine($"\n\nWeighted Average: {weightedAverageScore}");
             Console.WriteLine($"\nLetter Grade: {gradeLetter}");
         }
-
-
 
 
 
@@ -116,35 +102,46 @@ namespace FunctionCaseStudy
             string studentName = Console.ReadLine();
 
 
-
-            Console.Write("\nEnter the number of assignments: ");
-            int assNum = Convert.ToInt32(Console.ReadLine());
-
-            double[] assignmentScores = new double[assNum];
-
+            Console.WriteLine("\nEnter the scores like these examples: 3/5 8/10 13/15...");
             Console.WriteLine("Enter the assignment scores: ");
-            for (int i = 0; i <= assNum - 1; i++)
+            assignments = Console.ReadLine();
+
+            string[] aScores = assignments.Split(' ');
+            List<double> assignmentScores = new List<double>();
+
+            foreach (string score in aScores)
             {
-                assignmentScores[i] = Convert.ToInt32(Console.ReadLine());
+                string[] values = score.Split('/');
+                double numScore = Convert.ToDouble(values[0]);
+                double numTotal = Convert.ToDouble(values[1]);
+                double calculateValue = (numScore / numTotal) * 100;
+                assignmentScores.Add(calculateValue);
             }
 
 
-
-            Console.Write("\nEnter the number of quizzes: ");
-            int quizNum = Convert.ToInt32(Console.ReadLine());
-
-            double[] quizScores = new double[quizNum];
-
+            Console.WriteLine("\nEnter the scores like these examples: 3/5 8/10 13/15...");
             Console.WriteLine("Enter the quizz scores: ");
-            for (int i = 0; i <= quizNum - 1; i++)
+            quizzes = Console.ReadLine();
+
+            string[] qScores = quizzes.Split(' ');
+            List<double> quizScores = new List<double>();
+
+            foreach (string score in qScores)
             {
-                quizScores[i] = Convert.ToInt32(Console.ReadLine());
+                string[] values = score.Split('/');
+                double numScore = Convert.ToDouble(values[0]);
+                double numTotal = Convert.ToDouble(values[1]);
+                double calculateValue = (numScore / numTotal) * 100;
+                quizScores.Add(calculateValue);
             }
 
 
+            Console.WriteLine("\nEnter the final score like these examples: 85/100");
+            Console.Write("Enter final exam score: ");
+            string examFinalScore = Console.ReadLine();
 
-            Console.Write("\nEnter final exam score: ");
-            double finalExamScore = Convert.ToDouble(Console.ReadLine());
+            string[] finalExamScoreInput = examFinalScore.Split('/');
+            double finalExamScore = Convert.ToDouble(finalExamScoreInput[0]) / Convert.ToDouble(finalExamScoreInput[1]) * 100;
 
 
             displayStudentReport(studentName, assignmentScores, quizScores, finalExamScore);
